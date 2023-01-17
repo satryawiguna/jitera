@@ -8,7 +8,7 @@ services:
       dockerfile: Docker/dockerfile/DockerfileApp
     restart: unless-stopped
     tty: true
-    working_dir: /var/www
+    working_dir: /var/www/jitera.eu.org
     volumes:
       - ./:/var/www
       - ./Docker/php/php.ini:/usr/local/etc/php/app.conf/php.ini
