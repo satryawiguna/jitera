@@ -57,7 +57,7 @@ COPY --chown=jitera:jitera . /var/www/jitera.eu.org
 USER jitera
 
 # Initialize vendor composer
-RUN composer update
+RUN composer install
 
 CMD ["npm", "install"]
 CMD ["npm", "run", "build"]
