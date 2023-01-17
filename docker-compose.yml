@@ -10,7 +10,7 @@ services:
     tty: true
     working_dir: /var/www/jitera.eu.org
     volumes:
-      - ./:/var/www
+      - ./:/var/www/jitera.eu.org
       - ./Docker/php/php.ini:/usr/local/etc/php/app.conf/php.ini
     depends_on:
       - redis
