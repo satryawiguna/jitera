@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Contact;
-use App\Models\Role;
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Domain\Contact;
+use App\Domain\Role;
+use App\Domain\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
