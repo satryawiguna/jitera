@@ -4,8 +4,8 @@ services:
   api:
     container_name: jit_api
     build:
-      context: .
-      dockerfile: Docker/dockerfile/DockerfileApp
+      context: ./
+      dockerfile: Docker/Dockerfile
     restart: unless-stopped
     tty: true
     working_dir: /var/www
@@ -21,9 +21,7 @@ services:
 
   server:
     container_name: jit_server
-    build:
-      context: .
-      dockerfile: Docker/dockerfile/DockerfileServer
+    image: nginx:latest
     restart: unless-stopped
     tty: true
     ports:
@@ -32,6 +30,8 @@ services:
     volumes:
       - ./:/var/www
       - ./Docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./Docker/nginx/localhost.crt:/etc/nginx/certs/localhost.crt
+      - ./Docker/nginx/localhost.key:/etc/nginx/certs/localhost.key
     networks:
       - jit_network
 
@@ -63,9 +63,9 @@ services:
       - "3306:3306"
     command: --default-authentication-plugin=mysql_native_password
     volumes:
+      - database:/var/lib/mysql/
       - ./Docker/mysql/db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./Docker/mysql/mysql.conf:/etc/mysql/mysql.conf
-      - database:/var/lib/mysql/
     environment:
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_DATABASE=${DB_DATABASE}
