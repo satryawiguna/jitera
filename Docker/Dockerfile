@@ -64,7 +64,7 @@ RUN . ~/.nvm/nvm.sh  \
 WORKDIR /var/www
 
 # Copy existing application directory permissions
-COPY .. /var/www
+COPY . /var/www
 
 #RUN . ~/.nvm/nvm.sh  \
 #    && npm install \
