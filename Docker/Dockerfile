@@ -1,27 +1,33 @@
 # Pull php 8 version with FPM by Alpine to support Laravel 9
 FROM php:8.1.9-fpm
 
-# Set working directory
-WORKDIR /var/www
+# Environment
+ENV NODE 18.13.0
+ENV UID 1000
+ENV USER jitera
+
+# Replace shell with bash
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
+    locales \
+    jpegoptim optipng pngquant gifsicle \
+    zip \
+    unzip \
+    nano \
+    git \
+    curl \
+    wget \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
-    locales \
     libzip-dev \
-    zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
-    git \
-    curl \
     libonig-dev \
     libpq-dev \
-    nodejs \
-    npm
+    libxml2-dev \
+    libssl-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -37,34 +43,32 @@ RUN pecl install -o -f redis &&  \
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --install-dir=/usr/bin --filename=composer
 
-#RUN touch ~/.bashrc && chmod +x ~/.bashrc
-#RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-#RUN . ~/.nvm/nvm.sh && \
-#    . ~/.bashrc && \
-#    nvm install 18.12.0
+# Create system user
+RUN groupadd -g 1000 $USER
+RUN useradd -ms /bin/bash -d /home/$USER -g $USER -G www-data,root $USER
+RUN chown -R $USER:$USER /home/$USER
 
-# Add user for laravel application
-RUN groupadd -g 1000 jitera
-RUN useradd -u 1000 -ms /bin/bash -g jitera jitera
+# Switch user to jitera
+USER $USER
 
-# Copy existing application directory contents
-COPY ../.. /var/www
+# Install nvm
+RUN touch ~/.bashrc &&  \
+    chmod +x ~/.bashrc
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+RUN . ~/.nvm/nvm.sh  \
+    && source ~/.bashrc  \
+    && nvm install node $NODE  \
+    && nvm use default
+
+# Set working directory
+WORKDIR /var/www
 
 # Copy existing application directory permissions
-COPY --chown=jitera:jitera ../.. /var/www
+COPY .. /var/www
 
-# Change current user to jitera
-USER jitera
-
-# Initialize vendor composer
-RUN composer update
-
-CMD ["npm", "install"]
-CMD ["npm", "run", "build"]
-
-# Initialize application
-RUN php artisan key:generate && \
-    php artisan optimize
+#RUN . ~/.nvm/nvm.sh  \
+#    && npm install \
+#    && npm run.sh build
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
