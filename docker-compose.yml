@@ -4,17 +4,32 @@ services:
   api:
     container_name: jit_api
     build:
-      context: .
-      dockerfile: Docker/dockerfile/DockerfileApp
+      context: ./
+      dockerfile: Docker/Dockerfile
     restart: unless-stopped
     tty: true
-    working_dir: /var/www/jitera.eu.org
+    working_dir: /var/www
     volumes:
-      - ./:/var/www/jitera.eu.org
+      - ./:/var/www
       - ./Docker/php/php.ini:/usr/local/etc/php/app.conf/php.ini
     depends_on:
+      - server
       - redis
       - database
+    networks:
+      - jit_network
+
+  server:
+    container_name: jit_server
+    image: nginx:latest
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./Docker/nginx/conf.d:/etc/nginx/conf.d
     networks:
       - jit_network
 
@@ -46,9 +61,9 @@ services:
       - "3306:3306"
     command: --default-authentication-plugin=mysql_native_password
     volumes:
+      - database:/var/lib/mysql/
       - ./Docker/mysql/db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./Docker/mysql/mysql.conf:/etc/mysql/mysql.conf
-      - database:/var/lib/mysql/
     environment:
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_DATABASE=${DB_DATABASE}
