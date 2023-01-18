@@ -21,7 +21,7 @@ services:
 
   server:
     container_name: jit_server
-    image: nginx:latest
+    image: nginx:stable
     restart: unless-stopped
     tty: true
     ports:
