@@ -2,10 +2,13 @@
 
 namespace App\Core\Application\Request;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Core\Domain\BrokenRule;
+use Illuminate\Http\Request;
 
-abstract class AuditableRequest extends FormRequest
+abstract class AuditableRequest
 {
+    use BrokenRule;
+
     public ?string $request_by;
 
     /**
@@ -22,15 +25,5 @@ abstract class AuditableRequest extends FormRequest
     public function setRequestBy(?string $request_by): void
     {
         $this->request_by = $request_by;
-    }
-
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
     }
 }

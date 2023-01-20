@@ -2,12 +2,12 @@
 
 namespace App\Domain;
 
+use App\Core\Domain\BaseEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
-class Contact extends Model
+class Contact extends BaseEntity
 {
     use HasFactory, SoftDeletes;
 

@@ -2,15 +2,16 @@
 
 namespace App\Domain;
 
-//use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Core\Domain\BaseAuthEntity;
+use App\Core\Domain\Contract\IAggregateRoot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends BaseAuthEntity implements IAggregateRoot, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
@@ -23,6 +24,8 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'created_by',
+        'role_id'
     ];
 
     /**

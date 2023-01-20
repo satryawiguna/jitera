@@ -2,10 +2,10 @@
 
 namespace App\Domain;
 
+use App\Core\Domain\BaseEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Follow extends Model
+class Follow extends BaseEntity
 {
     use HasFactory;
 }

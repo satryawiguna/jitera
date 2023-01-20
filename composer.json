@@ -7,12 +7,14 @@
     "require": {
         "php": "^8.1",
         "cviebrock/eloquent-sluggable": "^9.0",
+        "darkaonline/l5-swagger": "^8.4",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/passport": "^11.5",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
+        "mark-gerarts/auto-mapper-plus": "^1.4",
         "opcodesio/log-viewer": "^1.9"
     },
     "require-dev": {

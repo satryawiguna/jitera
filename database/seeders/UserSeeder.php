@@ -27,6 +27,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
+            'created_by' => 'system',
             'role_id' => $role->id
         ]);
 
@@ -36,6 +37,6 @@ class UserSeeder extends Seeder
         ]);
 
         //It will create randomly user as Member
-        Contact::factory()->count(9)->create();
+//        Contact::factory()->count(9)->create();
     }
 }

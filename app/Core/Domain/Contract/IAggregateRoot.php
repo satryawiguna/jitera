@@ -6,8 +6,6 @@ use DateTime;
 
 interface IAggregateRoot
 {
-    public function getPrimaryKey(): int|string;
-
     public function getCreatedBy(): string;
 
     public function getCreatedAt(): DateTime;
