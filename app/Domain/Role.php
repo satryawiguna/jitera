@@ -2,11 +2,11 @@
 
 namespace App\Domain;
 
+use App\Core\Domain\BaseEntity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Role extends Model
+class Role extends BaseEntity
 {
     use HasFactory, SoftDeletes;
 

@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('password');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->rememberToken();
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

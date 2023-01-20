@@ -2,7 +2,6 @@
 
 namespace App\Presentation\Http\Controllers\Auth;
 
-use App\Presentation\Http\Controllers\Controller;
 use App\Presentation\Http\Controllers\WebBaseController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;

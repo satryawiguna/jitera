@@ -18,3 +18,4 @@ docker-compose.yml
 /.idea
 /.vscode
 /Docker
+/storage/api-docs
