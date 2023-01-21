@@ -1,16 +1,19 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Domain;
 
 use App\Domain\Role;
+use App\Domain\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain>
  */
 class UserFactory extends Factory
 {
+    protected $model = User::class;
+
     /**
      * Define the model's default state.
      *
@@ -18,7 +21,7 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $role = (new Role())->where('name', '=', 'Member')->first();
+        $role = (new Role())->where('slug', '=', 'member')->first();
 
         return [
             'username' => fake()->userName(),

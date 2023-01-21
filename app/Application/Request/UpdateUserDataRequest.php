@@ -1,14 +1,26 @@
 <?php
 
-namespace App\Application\Request\Auth;
+namespace App\Application\Request;
 
-use App\Core\Application\Request\AuditableRequest;
+use App\Core\Application\Request\IdentityableRequest;
 
-class RegisterDataRequest extends AuditableRequest
+class UpdateUserDataRequest extends IdentityableRequest
 {
     public string $nick_name;
 
     public string $full_name;
+
+    public string $country;
+
+    public string $state;
+
+    public string $city;
+
+    public string $address;
+
+    public int $post_code;
+
+    public string $mobile;
 
     public string $username;
 
@@ -48,6 +60,102 @@ class RegisterDataRequest extends AuditableRequest
     public function setFullName(string $full_name): void
     {
         $this->full_name = $full_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry(): string
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string $country
+     */
+    public function setCountry(string $country): void
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string $state
+     */
+    public function setState(string $state): void
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity(): string
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string $city
+     */
+    public function setCity(string $city): void
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     */
+    public function setAddress(string $address): void
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPostCode(): int
+    {
+        return $this->post_code;
+    }
+
+    /**
+     * @param int $post_code
+     */
+    public function setPostCode(int $post_code): void
+    {
+        $this->post_code = $post_code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobile(): string
+    {
+        return $this->mobile;
+    }
+
+    /**
+     * @param string $mobile
+     */
+    public function setMobile(string $mobile): void
+    {
+        $this->mobile = $mobile;
     }
 
     /**

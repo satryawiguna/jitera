@@ -44,8 +44,7 @@ class AuthService extends BaseService implements IAuthService
                 'username' => 'required|string|unique:users',
                 'email' => 'required|string|unique:users|email',
                 'password' => 'required|string|min:8',
-                'password_confirm' => 'required|same:password',
-                'role_id' => 'required|int'
+                'password_confirm' => 'required|same:password'
             ]);
 
             if ($brokenRules->fails()) {
@@ -62,6 +61,8 @@ class AuthService extends BaseService implements IAuthService
             Log::info("User register success");
 
         } catch (ResponseBadRequestException $ex) {
+            DB::rollBack();
+
             $response = $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::BAD_REQUEST->value,
@@ -70,6 +71,8 @@ class AuthService extends BaseService implements IAuthService
             Log::error("Invalid validation", $response->getMessageResponseError());
 
         } catch (QueryException $ex) {
+            DB::rollBack();
+
             $response = $this->setMessageResponse($response,
                 'ERROR',
                 HttpResponseType::BAD_REQUEST->value,

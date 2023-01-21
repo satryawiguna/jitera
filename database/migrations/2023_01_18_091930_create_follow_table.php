@@ -13,12 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('followers', function (Blueprint $table) {
-            $table->uuid('user_id_as_follower', 36);
-            $table->uuid('user_id_as_followed', 36);
+        Schema::create('follows', function (Blueprint $table) {
+            $table->uuid('follower_id', 36);
+            $table->foreign('follower_id')
+                ->references('id')
+                ->on('users');
+
+            $table->uuid('followed_id', 36)->nullable();
+            $table->foreign('followed_id')
+                ->references('id')
+                ->on('users');
+
             $table->timestamps();
 
-            $table->unique(['user_id_as_follower', 'user_id_as_followed']);
+            $table->unique(['follower_id', 'followed_id']);
         });
     }
 
@@ -29,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('followers');
+        Schema::dropIfExists('follows');
     }
 };

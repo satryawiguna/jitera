@@ -30,7 +30,7 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('/users/', [UserController::class, "actionAll"])->name('api.user.all');
+    Route::get('/users/{orderBy?}/{sort?}', [UserController::class, "actionAll"])->name('api.user.all');
 
     Route::post('/users/search', [UserController::class, "actionSearch"])->name('api.user.search');
     Route::group(['prefix' => 'user'], function () {
@@ -44,8 +44,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::delete('/user/{id}', [UserController::class, "actionDestroy"])->name('api.user.destroy');
 
     Route::group(['prefix' => 'user'], function () {
-        Route::post('/follow', [AuthController::class, "actionFollow"])->name('api.user.follow');
-        Route::post('/unfollow', [AuthController::class, "actionUnFollow"])->name('api.user.unfollow');
+        Route::get('/follow/{userId}', [UserController::class, "actionFollow"])->name('api.user.follow');
     });
 });
 

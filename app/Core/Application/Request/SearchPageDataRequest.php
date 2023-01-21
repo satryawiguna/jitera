@@ -2,30 +2,32 @@
 
 namespace App\Core\Application\Request;
 
-class SearchPageRequest
+class SearchPageDataRequest
 {
-    public string $search;
+    public string $search = '';
 
-    public int $perPage = 15;
+    public int $perPage = 10;
 
-    public int $page;
+    public int $page = 1;
 
     public string $orderBy = 'id';
 
     public string $sort = 'ASC';
 
+    public array $args = [];
+
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSearch(): string
+    public function getSearch(): ?string
     {
         return $this->search;
     }
 
     /**
-     * @param string $search
+     * @param string|null $search
      */
-    public function setSearch(string $search): void
+    public function setSearch(?string $search): void
     {
         $this->search = $search;
     }
@@ -92,5 +94,21 @@ class SearchPageRequest
     public function setSort(string $sort): void
     {
         $this->sort = $sort;
+    }
+
+    /**
+     * @return array
+     */
+    public function getArgs(): array
+    {
+        return $this->args;
+    }
+
+    /**
+     * @param array $args
+     */
+    public function setArgs(array $args): void
+    {
+        $this->args = $args;
     }
 }
