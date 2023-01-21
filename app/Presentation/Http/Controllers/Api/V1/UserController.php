@@ -45,19 +45,16 @@ class UserController extends ApiBaseController
         return $this->getListSearchJsonResponse($users);
     }
 
-    public function actionSearchPage(Request $request, $perPage, $page) {
-        $searchPageRequest = new SearchPageDataRequest();
-        $searchPageRequest->setSearch((string) $request->input("search"));
-        $searchPageRequest->setPerPage($perPage);
-        $searchPageRequest->setPage($page);
+    public function actionSearchPage(Request $request) {
+        $searchPageDataRequest = $this->setRequestData($request, new SearchPageDataRequest());
 
-        $ipAddresses = $this->manageService->getIpAddressSearchPage($searchPageRequest);
+        $users = $this->userService->getUserSearchPage($searchPageDataRequest);
 
-        if ($ipAddresses->isError()) {
-            return $this->getErrorJsonResponse($ipAddresses);
+        if ($users->isError()) {
+            return $this->getErrorJsonResponse($users);
         }
 
-        return $this->getListSearchPageJsonResponse($ipAddresses);
+        return $this->getListSearchPageJsonResponse($users);
     }
 
     public function actionShow(string $id) {

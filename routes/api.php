@@ -33,7 +33,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/users/{orderBy?}/{sort?}', [UserController::class, "actionAll"])->name('api.user.all');
 
     Route::post('/users/search', [UserController::class, "actionSearch"])->name('api.user.search');
-    Route::group(['prefix' => 'user'], function () {
+    Route::group(['prefix' => 'users'], function () {
         Route::post('/search/page', [UserController::class, "actionSearchPage"])->name('api.user.search.page');
     });
 

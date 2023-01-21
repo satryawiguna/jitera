@@ -53,6 +53,8 @@ class AuthService extends BaseService implements IAuthService
 
             $register = $this->userRepository->register($request);
 
+            DB::commit();
+
             $response = $this->setGenericObjectResponse($response,
                 $register,
                 'SUCCESS',
@@ -90,8 +92,6 @@ class AuthService extends BaseService implements IAuthService
 
             Log::error("Invalid register", $response->getMessageResponseError());
         }
-
-        DB::commit();
 
         return $response;
     }
@@ -248,7 +248,7 @@ class AuthService extends BaseService implements IAuthService
         return $response;
     }
 
-    public function refreshToken(string $token): GenericObjectResponse
+    public function refreshToken(string $refresh_token): GenericObjectResponse
     {
         $response = new GenericObjectResponse();
 
@@ -257,9 +257,9 @@ class AuthService extends BaseService implements IAuthService
             $oClient->setKeyType("string");
             $oClient = $oClient->where('password_client', 1)->first();
 
-            $oauthResponse = Http::asForm()->post('iam_server/oauth/token', [
+            $oauthResponse = Http::asForm()->post('jit_server/oauth/token', [
                 'grant_type' => 'refresh_token',
-                'refresh_token' => $token,
+                'refresh_token' => $refresh_token,
                 'client_id' => $oClient->id,
                 'client_secret' => $oClient->secret,
                 'scope' => '*',

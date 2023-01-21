@@ -16,5 +16,5 @@ interface IAuthService
 
     public function logout(LogoutDataRequest $request): BasicResponse;
 
-    public function refreshToken(string $token): GenericObjectResponse;
+    public function refreshToken(string $refresh_token): GenericObjectResponse;
 }
