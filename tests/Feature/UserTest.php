@@ -357,4 +357,23 @@ class UserTest extends TestCase
         $response->assertStatus(401)
             ->assertJson(['message' => 'Unauthenticated.']);
     }
+
+    public function test_user_register_success()
+    {
+        $this->artisan("migrate:refresh");
+        $this->artisan("db:seed");
+        $this->artisan('passport:install');
+
+        $response = $this->post(route('api.register'), [
+            "full_name" => "Arshya Kaela",
+            "nick_name" => "Kaela",
+            "username" => "kaela",
+            "email" => "kaela@freshcms.net",
+            "password" => "password",
+            "password_confirm" => "password"
+        ]);
+
+        $response->assertOk()
+            ->assertJsonStructure(['data']);
+    }
 }
