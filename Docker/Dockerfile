@@ -1,5 +1,5 @@
 # Pull php 8 version with FPM by Alpine to support Laravel 9
-FROM php:8.1.9-fpm
+FROM php:8.2.1-fpm
 
 # Environment
 ENV NODE 18.13.0
@@ -36,8 +36,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/
 RUN docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath gd
 RUN pecl install -o -f redis &&  \
-    rm -rf /tmp/pear
-RUN docker-php-ext-enable redis
+    rm -rf /tmp/pear &&  \
+    docker-php-ext-enable redis
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
