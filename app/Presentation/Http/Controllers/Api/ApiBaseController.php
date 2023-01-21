@@ -93,6 +93,24 @@ class ApiBaseController extends Controller
         ], $response->getCodeStatus());
     }
 
+    /**
+     * @OA\Schema(
+     *  schema="ObjectJSONResponse",
+     *  title="Object JSON Response",
+     * 	@OA\Property(
+     * 		property="type",
+     * 		type="string"
+     * 	),
+     * 	@OA\Property(
+     * 		property="code_status",
+     * 		type="int"
+     * 	),
+     * 	@OA\Property(
+     * 		property="data",
+     * 		type="object"
+     * 	)
+     * )
+     */
     protected function getObjectJsonResponse(GenericObjectResponse $response): JsonResponse {
         return response()->json([
             "type" => $response->getType(),
@@ -101,6 +119,24 @@ class ApiBaseController extends Controller
         ], $response->getCodeStatus());
     }
 
+    /**
+     * @OA\Schema(
+     *  schema="ListJSONResponse",
+     *  title="List JSON Response",
+     * 	@OA\Property(
+     * 		property="type",
+     * 		type="string"
+     * 	),
+     * 	@OA\Property(
+     * 		property="code_status",
+     * 		type="int"
+     * 	),
+     * 	@OA\Property(
+     * 		property="datas",
+     * 		type="object"
+     * 	)
+     * )
+     */
     protected function getListJsonResponse(GenericListResponse $response): JsonResponse {
         return response()->json([
             "type" => $response->getType(),
@@ -109,6 +145,28 @@ class ApiBaseController extends Controller
         ], $response->getCodeStatus());
     }
 
+    /**
+     * @OA\Schema(
+     *  schema="ListSearchJSONResponse",
+     *  title="List Search JSON Response",
+     * 	@OA\Property(
+     * 		property="type",
+     * 		type="string"
+     * 	),
+     * 	@OA\Property(
+     * 		property="code_status",
+     * 		type="int"
+     * 	),
+     * 	@OA\Property(
+     * 		property="total_count",
+     * 		type="int"
+     * 	),
+     * 	@OA\Property(
+     * 		property="datas",
+     * 		type="object"
+     * 	)
+     * )
+     */
     protected function getListSearchJsonResponse(GenericListSearchResponse $response): JsonResponse {
         return response()->json([
             "type" => $response->getType(),
@@ -118,6 +176,32 @@ class ApiBaseController extends Controller
         ], $response->getCodeStatus());
     }
 
+    /**
+     * @OA\Schema(
+     *  schema="ListSearchPageJSONResponse",
+     *  title="List Search Page JSON Response",
+     * 	@OA\Property(
+     * 		property="type",
+     * 		type="string"
+     * 	),
+     * 	@OA\Property(
+     * 		property="code_status",
+     * 		type="int"
+     * 	),
+     * 	@OA\Property(
+     * 		property="total_count",
+     * 		type="int"
+     * 	),
+     * 	@OA\Property(
+     * 		property="meta",
+     * 		type="object"
+     * 	),
+     * 	@OA\Property(
+     * 		property="datas",
+     * 		type="object"
+     * 	)
+     * )
+     */
     protected function getListSearchPageJsonResponse(GenericListSearchPageResponse $response): JsonResponse {
         return response()->json([
             "type" => $response->getType(),

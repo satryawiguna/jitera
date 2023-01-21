@@ -19,6 +19,54 @@ class AuthController extends ApiBaseController
         $this->authService = $authService;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/register/member",
+     *     tags={"General"},
+     *     summary="Register",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="full_name",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="nick_name",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="username",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password_confirm",
+     *                     type="string"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(ref="#/components/schemas/ObjectJSONResponse")
+     *             },
+     *             @OA\Examples(example="Register member", value={"type":"SUCCESS","code_status":200,"data":{"id":"b00ef6af-bde8-4185-a780-0a9dbd6d652e","username":"kaela","email":"kaela@freshcms.net","email_verified_at":null,"status":"active","created_by":"system","updated_by":null,"created_at":"2023-01-21T07:12:57.000000Z","updated_at":"2023-01-21T07:12:57.000000Z","deleted_at":null,"role_id":2}}, summary="Register member")
+     *         )
+     *     )
+     * )
+     */
     public function actionRegister(Request $request)
     {
         $registerDataRequest = $this->setRequestData($request, new RegisterDataRequest());
@@ -38,6 +86,7 @@ class AuthController extends ApiBaseController
     /**
      * @OA\Post(
      *     path="/auth/login",
+     *     tags={"Authentication"},
      *     summary="Login authentication",
      *     @OA\RequestBody(
      *         @OA\MediaType(
@@ -55,8 +104,15 @@ class AuthController extends ApiBaseController
      *         )
      *     ),
      *     @OA\Response(
-     *          response=200,
-     *          description="Loged in"
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(ref="#/components/schemas/ObjectJSONResponse")
+     *             },
+     *             @OA\Examples(example="Login with email identity", value={"type":"SUCCESS","code_status":200,"data":{"full_name":null,"nick_name":null,"token":{"token_type":"Bearer","expires_in":86400,"access_token":"...","refresh_token":"..."}}}, summary="Login with email identity"),
+     *             @OA\Examples(example="Login with username identity", value={"type":"SUCCESS","code_status":200,"data":{"full_name":null,"nick_name":null,"token":{"token_type":"Bearer","expires_in":86400,"access_token":"...","refresh_token":"..."}}}, summary="Login with username identity")
+     *         )
      *     )
      * )
      */
@@ -75,6 +131,34 @@ class AuthController extends ApiBaseController
         return $this->getObjectJsonResponse($loginResponse);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/auth/logout",
+     *     tags={"Authentication"},
+     *     summary="Logout authentication",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(ref="#/components/schemas/ObjectJSONResponse")
+     *             },
+     *             @OA\Examples(example="Logout", value={"type":"SUCCESS","code_status":200,"message":"Logout succeed"}, summary="Logout")
+     *         )
+     *     )
+     * )
+     */
     public function actionLogout(Request $request)
     {
         $logoutDataRequest = $this->setRequestData($request, new LogoutDataRequest());
@@ -91,6 +175,34 @@ class AuthController extends ApiBaseController
         return $this->getSuccessLatestJsonResponse($logoutResponse);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/auth/refresh-token",
+     *     tags={"Authentication"},
+     *     summary="Refresh token authentication",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="refresh_token",
+     *                     type="string"
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK",
+     *         @OA\JsonContent(
+     *             oneOf={
+     *                 @OA\Schema(ref="#/components/schemas/ObjectJSONResponse")
+     *             },
+     *             @OA\Examples(example="Login with email identity", value={"type":"SUCCESS","code_status":200,"data":{"full_name":null,"nick_name":null,"token":{"token_type":"Bearer","expires_in":86400,"access_token":"...","refresh_token":"..."}}}, summary="Refresh the access token")
+     *         )
+     *     )
+     * )
+     */
     public function actionRefreshToken(Request $request)
     {
         $refreshResponse = $this->authService->refreshToken($request->refresh_token);
