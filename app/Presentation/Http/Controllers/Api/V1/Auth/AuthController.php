@@ -93,7 +93,7 @@ class AuthController extends ApiBaseController
 
     public function actionRefreshToken(Request $request)
     {
-        $refreshResponse = $this->authService->refreshToken($request->token);
+        $refreshResponse = $this->authService->refreshToken($request->refresh_token);
 
         if ($refreshResponse->isError()) {
             return $this->getErrorJsonResponse($refreshResponse);

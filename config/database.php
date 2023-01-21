@@ -54,7 +54,7 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
+            'prefix' => env('DB_TABLE_PREFIX', ''),
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
@@ -93,6 +93,25 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'mysql_testing' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_TEST', '127.0.0.1'),
+            'port' => env('DB_PORT_TEST', '3306'),
+            'database' => env('DB_DATABASE_TEST', 'forge'),
+            'username' => env('DB_USERNAME_TEST', 'forge'),
+            'password' => env('DB_PASSWORD_TEST', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => env('DB_TABLE_PREFIX', ''),
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
     ],
 
     /*

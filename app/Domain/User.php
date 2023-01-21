@@ -95,4 +95,9 @@ class User extends BaseAuthEntity implements IAggregateRoot, MustVerifyEmail
             ->withTimestamps()
             ->withPivot('created_at');
     }
+
+    public function oAuth()
+    {
+        return $this->hasMany(OAuth::class, 'user_id');
+    }
 }
