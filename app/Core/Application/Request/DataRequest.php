@@ -2,29 +2,11 @@
 
 namespace App\Core\Application\Request;
 
-class SearchRequest
+class DataRequest
 {
-    public string $search;
-
-    public string $orderBy;
+    public string $orderBy = 'id';
 
     public string $sort = 'ASC';
-
-    /**
-     * @return string
-     */
-    public function getSearch(): string
-    {
-        return $this->search;
-    }
-
-    /**
-     * @param string $search
-     */
-    public function setSearch(string $search): void
-    {
-        $this->search = $search;
-    }
 
     /**
      * @return string
@@ -57,5 +39,4 @@ class SearchRequest
     {
         $this->sort = $sort;
     }
-
 }

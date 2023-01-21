@@ -1,15 +1,18 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Domain;
 
+use App\Domain\Contact;
 use App\Domain\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Contact>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain>
  */
 class ContactFactory extends Factory
 {
+    protected $model = Contact::class;
+
     /**
      * Define the model's default state.
      *

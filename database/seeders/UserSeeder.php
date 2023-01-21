@@ -37,6 +37,6 @@ class UserSeeder extends Seeder
         ]);
 
         //It will create randomly user as Member
-//        Contact::factory()->count(9)->create();
+        Contact::factory()->count(9)->create();
     }
 }

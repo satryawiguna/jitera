@@ -75,4 +75,24 @@ class User extends BaseAuthEntity implements IAggregateRoot, MustVerifyEmail
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
+    public function followed()
+    {
+        return $this->belongsToMany(self::class,
+            'follows',
+            'followed_id',
+            'follower_id')
+            ->withTimestamps()
+            ->withPivot('created_at');
+    }
+
+    public function follower()
+    {
+        return $this->belongsToMany(self::class,
+            'follows',
+            'follower_id',
+            'followed_id')
+            ->withTimestamps()
+            ->withPivot('created_at');
+    }
 }
