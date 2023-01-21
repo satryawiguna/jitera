@@ -6,9 +6,6 @@ ENV NODE 18.13.0
 ENV UID 1000
 ENV USER jitera
 
-# Replace shell with bash
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -38,6 +35,9 @@ RUN docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath gd
 RUN pecl install -o -f redis &&  \
     rm -rf /tmp/pear &&  \
     docker-php-ext-enable redis
+
+# Replace shell with bash
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
