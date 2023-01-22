@@ -1,5 +1,5 @@
 # Pull php 8 version with FPM by Alpine to support Laravel 9
-FROM php:8.1-fpm
+FROM php:8.1.9-fpm
 
 # Environment
 ENV NODE 18.13.0

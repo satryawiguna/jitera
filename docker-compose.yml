@@ -3,6 +3,7 @@ version: "3.9"
 services:
   api:
     container_name: jit_api
+    user: root
     build:
       context: ./
       dockerfile: Docker/Dockerfile
