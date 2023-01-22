@@ -14,13 +14,14 @@ services:
       - ./Docker/php/php.ini:/usr/local/etc/php/app.conf/php.ini
     depends_on:
       - server
+      - redis
       - database
     networks:
       - jit_network
 
   server:
     container_name: jit_server
-    image: nginx:latest
+    image: nginx:stable
     restart: unless-stopped
     tty: true
     ports:
@@ -32,9 +33,26 @@ services:
     networks:
       - jit_network
 
+  redis:
+    container_name: jit_redis
+    image: redis:7
+    restart: always
+    tty: true
+    env_file:
+      - .env
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - jit_network
+
   database:
     container_name: jit_mysql
-    image: mysql:latest
+    image: mysql:8.0
     restart: always
     tty: true
     env_file:
