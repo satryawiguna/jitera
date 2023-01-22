@@ -62,7 +62,7 @@ RUN . ~/.nvm/nvm.sh  \
 WORKDIR /var/www
 
 # Copy existing application directory permissions
-COPY . /var/www
+COPY --chown=$USER:$USER . /var/www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
