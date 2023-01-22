@@ -35,7 +35,7 @@ services:
 
   redis:
     container_name: jit_redis
-    image: redis:7
+    image: redis:latest
     restart: always
     tty: true
     env_file:
@@ -52,7 +52,7 @@ services:
 
   database:
     container_name: jit_mysql
-    image: mysql:8.0
+    image: mysql:latest
     restart: always
     tty: true
     env_file:
