@@ -54,6 +54,7 @@ $ docker exec -t -i /bin/bash -c "php artisan db:seed"
 ```
 
 ### Run unit test
+![alt text](./unit-test.jpg)
 ```
 $ docker exec -t -i jit_api /bin/bash -c "php artisan test"
 ```
