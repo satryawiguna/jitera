@@ -12,23 +12,20 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    locales \
-    jpegoptim optipng pngquant gifsicle \
-    zip \
-    unzip \
-    nano \
-    git \
-    curl \
-    wget \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
+    locales \
     libzip-dev \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl \
     libonig-dev \
     libpq-dev \
-    libxml2-dev \
-    libssl-dev \
-    libcurl3-openssl-dev
+    nano
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -66,10 +63,6 @@ WORKDIR /var/www
 
 # Copy existing application directory permissions
 COPY . /var/www
-
-#RUN . ~/.nvm/nvm.sh  \
-#    && npm install \
-#    && npm run.sh build
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
