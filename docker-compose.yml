@@ -65,10 +65,11 @@ services:
       - ./Docker/mysql/db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./Docker/mysql/mysql.conf:/etc/mysql/mysql.conf
     environment:
-      - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_PORT=${DB_PORT}
       - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     networks:
       - jit_network
 
