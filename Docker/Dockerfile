@@ -29,7 +29,6 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libssl-dev \
     php-pear \
-    php5-dev \
     libcurl3-openssl-dev
 
 # Clear cache
