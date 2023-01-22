@@ -1,0 +1,529 @@
+{
+	"info": {
+		"_postman_id": "f42550b0-1f47-4a96-acaf-1b715468b875",
+		"name": "Jitera",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identity\": \"hahn.chauncey\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh_token\": \"def5020039cf8e296d88eebe31360f760843ca9deec3218f105405ac5902107dac3f0b1223f3a312a83a783c2380edce8ba911fb7ad5750ff6e7c070a08a1a558ff40f83215a2d2fbb9e7fab99845101494f56c4cbf3ca992247d8fba9dd18dd786f9476e0cbc2a90b11d14d52fc3fe86a9070f1d56c48892bedd1028a73594d521dcb19cde20a8516a048eef6923134583d13f2149637206878d40d371e87e1abdc2353459e252e57c07995a0e8d2a2dfe16ca082030d1242aef9456982bdb3abcb469423b02cc457ceb6f37c99ed43dd29de1081a88b19ce339ef47bd20904d30f232adaf1f96e9d19cf11b87c809a428e2b7d237b3bde577d90c09be92d49fe4ef34c1e3ca6e1b00d78c5d66a4a4a4ca287987d91c8058506ed9f2cc33932350748ec29d7cfbfdd35dff04fc06238605a04e7ca5b60b10b913ea4a607039e9e04870e866c5142c5e64474035322fa8f45a2b50270478581adbd763746a6a7d8fb554ea422eb5d3f359d031d5d47d6e1823af0d758078807f716c73f9dd227bf5343763f7a8637080ea2f2d4bb61566914994f2f7a75ece2c54693aace06a0bd4f453f257edf4e3003494d\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/refresh-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@jitera.eu.org\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ODQzN2IxNS1iMGM1LTQyOGMtYTAxMi1jZTlhNDlhNjZlMjQiLCJqdGkiOiJjNjZjMWRkYjZjYzE0OGU0NmQ0NmVlNjExZTBhOGRiNmVhMTJkNzliYTYzNzZlMDBmMDMyYTdkZmVjYzc0NWM2OTI5MTYxZTM4OGNmZGI3NiIsImlhdCI6MTY3NDE4ODc0MS42NzIyMjQsIm5iZiI6MTY3NDE4ODc0MS42NzIyMjYsImV4cCI6MTY3NDI3NTE0MS41ODIzMDcsInN1YiI6ImQwMTE4OTE4LWUzYmMtNDMxMS1iMmExLWJjODcwODJlNDYzMyIsInNjb3BlcyI6WyIqIl19.wDmuSHkxfUCpD1FV5mmY_a6ElhzO2j7YXL4wI4K7S7OPfQKUM1QbvhlnlWe6HY_FX0EhQBkHwhU4ln1GF2d0TF2owmXUKcGTn053vcZq7UzUkGzC-45Dg6q6H2Z-jXnl43i8ppdYoSMgOsEklz6aDbSye07W0nurXyaPiUF93JqzfsZg6KKEp2QnqqbA-bLMti4ElZQy_EsG_4uKH1bB2iuLokLTsuYYEgC-PDwvHA7nhS7tXqnMVxByVt_k6xtCiYtI7dxuH1EGOBsWLXqcp4mcwFfd39AQM5sTN9inYORMJXXTNqoNeFwoC7QCEtDMUahI5TYDs58tNdRgrWi0vEV1qhdIlntNxvI8yIj0a8eOeUEfoA--fI4FHPHeqH5n5UmDFNatQLVh6djLftE9a-VrHN11khnbd0gp2HNvUUwpExFP7MtLZbC-oygaCYGNPwnLYwyGXq3osi5qHnTXJDgoI6sVw0lBgcR64jbGhg6pW4Cq6BjTeowngEOb18LhT4Bdhu9Zf5sJlRgeodmP0Hb06kZgKNHSGkOqwm7MpQ2uCF5BBhrhoZzGQA0CZwU_lB5_vG_H3O7cHya4VLhVKo7AgLw9a7NQnHCUr-ItPS0OufvsNy4Ee2eHu5Z90O0pusJJUBF5FrQdlDrma8-AGA_cafcEgRHNeU3ew0edziE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users?orderBy=created_at&sort=desc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "orderBy",
+									"value": "created_at"
+								},
+								{
+									"key": "sort",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"search\": null,\n    \"orderBy\": null,\n    \"sort\": null,\n    \"args\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/search",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Search Page",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"search\": null,\n    \"orderBy\": \"id\",\n    \"sort\": \"asc\",\n    \"perPage\": 10,\n    \"page\": 1,\n    \"args\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/search/page",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"search",
+								"page"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"Riana\",\n    \"nick_name\": \"Laskmidewi\",\n    \"username\": \"riana\",\n    \"email\": \"riana@freshcms.net\",\n    \"password\": \"password\",\n    \"password_confirm\": \"password\",\n    \"role_id\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ODQzN2IxNS1iMGM1LTQyOGMtYTAxMi1jZTlhNDlhNjZlMjQiLCJqdGkiOiJjNjZjMWRkYjZjYzE0OGU0NmQ0NmVlNjExZTBhOGRiNmVhMTJkNzliYTYzNzZlMDBmMDMyYTdkZmVjYzc0NWM2OTI5MTYxZTM4OGNmZGI3NiIsImlhdCI6MTY3NDE4ODc0MS42NzIyMjQsIm5iZiI6MTY3NDE4ODc0MS42NzIyMjYsImV4cCI6MTY3NDI3NTE0MS41ODIzMDcsInN1YiI6ImQwMTE4OTE4LWUzYmMtNDMxMS1iMmExLWJjODcwODJlNDYzMyIsInNjb3BlcyI6WyIqIl19.wDmuSHkxfUCpD1FV5mmY_a6ElhzO2j7YXL4wI4K7S7OPfQKUM1QbvhlnlWe6HY_FX0EhQBkHwhU4ln1GF2d0TF2owmXUKcGTn053vcZq7UzUkGzC-45Dg6q6H2Z-jXnl43i8ppdYoSMgOsEklz6aDbSye07W0nurXyaPiUF93JqzfsZg6KKEp2QnqqbA-bLMti4ElZQy_EsG_4uKH1bB2iuLokLTsuYYEgC-PDwvHA7nhS7tXqnMVxByVt_k6xtCiYtI7dxuH1EGOBsWLXqcp4mcwFfd39AQM5sTN9inYORMJXXTNqoNeFwoC7QCEtDMUahI5TYDs58tNdRgrWi0vEV1qhdIlntNxvI8yIj0a8eOeUEfoA--fI4FHPHeqH5n5UmDFNatQLVh6djLftE9a-VrHN11khnbd0gp2HNvUUwpExFP7MtLZbC-oygaCYGNPwnLYwyGXq3osi5qHnTXJDgoI6sVw0lBgcR64jbGhg6pW4Cq6BjTeowngEOb18LhT4Bdhu9Zf5sJlRgeodmP0Hb06kZgKNHSGkOqwm7MpQ2uCF5BBhrhoZzGQA0CZwU_lB5_vG_H3O7cHya4VLhVKo7AgLw9a7NQnHCUr-ItPS0OufvsNy4Ee2eHu5Z90O0pusJJUBF5FrQdlDrma8-AGA_cafcEgRHNeU3ew0edziE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"Kompel Lompel Dompel\",\n    \"nick_name\": \"Dompel\",\n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user/8dee4369-1da2-430e-a571-b14274fef160",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"8dee4369-1da2-430e-a571-b14274fef160"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Destroy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ODQzN2IxNS1iMGM1LTQyOGMtYTAxMi1jZTlhNDlhNjZlMjQiLCJqdGkiOiJjNjZjMWRkYjZjYzE0OGU0NmQ0NmVlNjExZTBhOGRiNmVhMTJkNzliYTYzNzZlMDBmMDMyYTdkZmVjYzc0NWM2OTI5MTYxZTM4OGNmZGI3NiIsImlhdCI6MTY3NDE4ODc0MS42NzIyMjQsIm5iZiI6MTY3NDE4ODc0MS42NzIyMjYsImV4cCI6MTY3NDI3NTE0MS41ODIzMDcsInN1YiI6ImQwMTE4OTE4LWUzYmMtNDMxMS1iMmExLWJjODcwODJlNDYzMyIsInNjb3BlcyI6WyIqIl19.wDmuSHkxfUCpD1FV5mmY_a6ElhzO2j7YXL4wI4K7S7OPfQKUM1QbvhlnlWe6HY_FX0EhQBkHwhU4ln1GF2d0TF2owmXUKcGTn053vcZq7UzUkGzC-45Dg6q6H2Z-jXnl43i8ppdYoSMgOsEklz6aDbSye07W0nurXyaPiUF93JqzfsZg6KKEp2QnqqbA-bLMti4ElZQy_EsG_4uKH1bB2iuLokLTsuYYEgC-PDwvHA7nhS7tXqnMVxByVt_k6xtCiYtI7dxuH1EGOBsWLXqcp4mcwFfd39AQM5sTN9inYORMJXXTNqoNeFwoC7QCEtDMUahI5TYDs58tNdRgrWi0vEV1qhdIlntNxvI8yIj0a8eOeUEfoA--fI4FHPHeqH5n5UmDFNatQLVh6djLftE9a-VrHN11khnbd0gp2HNvUUwpExFP7MtLZbC-oygaCYGNPwnLYwyGXq3osi5qHnTXJDgoI6sVw0lBgcR64jbGhg6pW4Cq6BjTeowngEOb18LhT4Bdhu9Zf5sJlRgeodmP0Hb06kZgKNHSGkOqwm7MpQ2uCF5BBhrhoZzGQA0CZwU_lB5_vG_H3O7cHya4VLhVKo7AgLw9a7NQnHCUr-ItPS0OufvsNy4Ee2eHu5Z90O0pusJJUBF5FrQdlDrma8-AGA_cafcEgRHNeU3ew0edziE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/user/8dee4369-1da2-430e-a571-b14274fef160",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"8dee4369-1da2-430e-a571-b14274fef160"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follow",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/user/follow/4cc66c9b-5328-49b1-8854-1b305c0ac88b",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"follow",
+								"4cc66c9b-5328-49b1-8854-1b305c0ac88b"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"full_name\": \"Erna Widhiastuti\",\n    \"nick_name\": \"Erna\",\n    \"username\": \"\",\n    \"email\": \"\",\n    \"password\": \"\",\n    \"password_confirm\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/register/member",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"register",
+						"member"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
