@@ -7,9 +7,9 @@ use App\Application\Exceptions\ResponseInvalidUserIdFollowUnFollowException;
 use App\Application\Exceptions\ResponseNotFoundException;
 use App\Application\Request\CreateUserDataRequest;
 use App\Application\Request\UpdateUserDataRequest;
-use App\Core\Application\Request\DataRequest;
-use App\Core\Application\Request\SearchDataRequest;
-use App\Core\Application\Request\SearchPageDataRequest;
+use App\Core\Application\Request\ListDataRequest;
+use App\Core\Application\Request\ListSearchDataRequest;
+use App\Core\Application\Request\ListSearchPageDataRequest;
 use App\Core\Application\Response\BasicResponse;
 use App\Core\Application\Response\GenericListResponse;
 use App\Core\Application\Response\GenericListSearchPageResponse;
@@ -34,17 +34,34 @@ class UserService extends BaseService implements IUserService
         $this->userRepository = $userRepository;
     }
 
-    public function getUserAll(DataRequest $request): GenericListResponse
+    public function getUserAll(ListDataRequest $request): GenericListResponse
     {
         $response = new GenericListResponse();
 
         try {
-            $users = $this->userRepository->all($request->orderBy, $request->sort, ["contact"]);
+            $brokenRules = $request->validate();
+
+            if ($brokenRules->fails()) {
+                throw new ResponseBadRequestException($brokenRules->errors()->getMessages());
+            }
+
+            $users = $this->userRepository->all($request->order_by,
+                $request->sort,
+                $request->args,
+                ['contact']);
 
             $response = $this->setGenericListResponse($response,
                 $users,
                 'SUCCESS',
                 HttpResponseType::SUCCESS->value);
+
+        } catch (ResponseBadRequestException $ex) {
+            $response = $this->setMessageResponse($response,
+                'ERROR',
+                HttpResponseType::BAD_REQUEST->value,
+                $ex->getMessages());
+
+            Log::error("Bad request to store user", $response->getMessageResponseError());
 
         } catch (Exception $ex) {
             $response = $this->setMessageResponse($response,
@@ -58,13 +75,19 @@ class UserService extends BaseService implements IUserService
         return $response;
     }
 
-    public function getUserSearch(SearchDataRequest $request): GenericListSearchResponse
+    public function getUserSearch(ListSearchDataRequest $request): GenericListSearchResponse
     {
         $response = new GenericListSearchResponse();
 
         try {
+            $brokenRules = $request->validate();
+
+            if ($brokenRules->fails()) {
+                throw new ResponseBadRequestException($brokenRules->errors()->getMessages());
+            }
+
             $users = $this->userRepository->allSearch($request->search,
-                $request->orderBy,
+                $request->order_by,
                 $request->sort,
                 $request->args,
                 ["contact"]
@@ -75,6 +98,14 @@ class UserService extends BaseService implements IUserService
                 $users->count(),
                 'SUCCESS',
                 HttpResponseType::SUCCESS->value);
+
+        } catch (ResponseBadRequestException $ex) {
+            $response = $this->setMessageResponse($response,
+                'ERROR',
+                HttpResponseType::BAD_REQUEST->value,
+                $ex->getMessages());
+
+            Log::error("Bad request to store user", $response->getMessageResponseError());
 
         } catch (Exception $ex) {
             $response = $this->setMessageResponse($response,
@@ -88,15 +119,15 @@ class UserService extends BaseService implements IUserService
         return $response;
     }
 
-    public function getUserSearchPage(SearchPageDataRequest $request): GenericListSearchPageResponse
+    public function getUserSearchPage(ListSearchPageDataRequest $request): GenericListSearchPageResponse
     {
         $response = new GenericListSearchPageResponse();
 
         try {
             $users = $this->userRepository->allSearchPage($request->search,
-                $request->perPage,
+                $request->per_page,
                 $request->page,
-                $request->orderBy,
+                $request->order_by,
                 $request->sort,
                 $request->args,
                 ["contact"]

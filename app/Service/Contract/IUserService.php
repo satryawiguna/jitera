@@ -5,6 +5,9 @@ namespace App\Service\Contract;
 use App\Application\Request\CreateUserDataRequest;
 use App\Application\Request\UpdateUserDataRequest;
 use App\Core\Application\Request\DataRequest;
+use App\Core\Application\Request\ListDataRequest;
+use App\Core\Application\Request\ListSearchDataRequest;
+use App\Core\Application\Request\ListSearchPageDataRequest;
 use App\Core\Application\Request\SearchDataRequest;
 use App\Core\Application\Request\SearchPageDataRequest;
 use App\Core\Application\Response\BasicResponse;
@@ -15,11 +18,11 @@ use App\Core\Application\Response\GenericObjectResponse;
 
 interface IUserService
 {
-    public function getUserAll(DataRequest $request): GenericListResponse;
+    public function getUserAll(ListDataRequest $request): GenericListResponse;
 
-    public function getUserSearch(SearchDataRequest $request): GenericListSearchResponse;
+    public function getUserSearch(ListSearchDataRequest $request): GenericListSearchResponse;
 
-    public function getUserSearchPage(SearchPageDataRequest $request): GenericListSearchPageResponse;
+    public function getUserSearchPage(ListSearchPageDataRequest $request): GenericListSearchPageResponse;
 
     public function getUser(string $id): GenericObjectResponse;
 

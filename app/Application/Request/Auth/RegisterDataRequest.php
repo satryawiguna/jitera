@@ -4,113 +4,104 @@ namespace App\Application\Request\Auth;
 
 use App\Core\Application\Request\AuditableRequest;
 
+/**
+ * @OA\Schema(
+ *      schema="RegisterDataRequest",
+ *      type="object",
+ *      required={"nick_name", "full_name"},
+ * )
+ */
+
 class RegisterDataRequest extends AuditableRequest
 {
-    public string $nick_name;
-
-    public string $full_name;
-
-    public string $username;
-
-    public string $email;
-
-    public string $password;
-
-    public string $password_confirm;
+    /**
+     * @OA\Property(
+     *      property="nick_name",
+     *      title="nick_name",
+     *      example="Satrya",
+     *      type="string"
+     * )
+     */
+    public string $nick_name = "";
 
     /**
-     * @return string
+     * @OA\Property(
+     *      property="full_name",
+     *      title="full_name",
+     *      example="Satrya Wiguna",
+     *      type="string"
+     * )
      */
-    public function getNickName(): string
+    public string $full_name = "";
+
+    /**
+     * @OA\Property(
+     *      property="username",
+     *      title="username",
+     *      example="satryawiguna",
+     *      type="string"
+     * )
+     */
+    public string $username = "";
+
+    /**
+     * @OA\Property(
+     *      property="email",
+     *      title="email",
+     *      example="satrya@freshcms.net",
+     *      type="string"
+     * )
+     */
+    public string $email = "";
+
+    /**
+     * @OA\Property(
+     *      property="password",
+     *      title="password",
+     *      example="12345",
+     *      type="string"
+     * )
+     */
+    public string $password = "";
+
+    /**
+     * @OA\Property(
+     *      property="password_confirm",
+     *      title="password_confirm",
+     *      example="12345",
+     *      type="string"
+     * )
+     */
+    public string $password_confirm = "";
+
+    public function rules()
     {
-        return $this->nick_name;
+        return [
+            'nick_name' => ['required', 'string'],
+            'full_name' => ['required', 'string'],
+            'username' => ['required', 'string', 'unique:users'],
+            'email' => ['required', 'string', 'unique:users', 'email'],
+            'password' => ['required', 'min:8'],
+            'password_confirm' => ['required', 'same:password']
+        ];
     }
 
-    /**
-     * @param string $nick_name
-     */
-    public function setNickName(string $nick_name): void
+    public function messages()
     {
-        $this->nick_name = $nick_name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFullName(): string
-    {
-        return $this->full_name;
-    }
-
-    /**
-     * @param string $full_name
-     */
-    public function setFullName(string $full_name): void
-    {
-        $this->full_name = $full_name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string $username
-     */
-    public function setUsername(string $username): void
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPasswordConfirm(): string
-    {
-        return $this->password_confirm;
-    }
-
-    /**
-     * @param string $password_confirm
-     */
-    public function setPasswordConfirm(string $password_confirm): void
-    {
-        $this->password_confirm = $password_confirm;
+        return [
+            'nick_name.required' => 'Nick name is required',
+            'nick_name.string' => 'Nick name is string expected',
+            'username.required' => 'Username is required',
+            'username.string' => 'Username is string expected',
+            'username.unique' => 'Username already taken, please try another one',
+            'email.required' => 'Email is required',
+            'email.string' => 'Email is string expected',
+            'email.unique' => 'Email already taken, please try another one',
+            'email.email' => 'Invalid email format',
+            'password.required' => 'Password is required',
+            'password.min' => 'Password is not allowed less than 8 characters',
+            'password_confirm.required' => 'Password confirm is required',
+            'password_confirm.match' => 'Password must be match with password'
+        ];
     }
 }

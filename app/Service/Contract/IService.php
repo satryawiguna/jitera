@@ -12,6 +12,16 @@ use Illuminate\Support\Collection;
 
 interface IService
 {
+    public function setMessageResponse(BasicResponse $response,
+                                       string $type,
+                                       int $codeStatus,
+                                       string|array $message = null);
+
+    public function setGenericObjectResponse(GenericObjectResponse $response,
+                                             BaseEntity|array|null $dto,
+                                             string $type,
+                                             int $codeStatus): GenericObjectResponse;
+
     public function setGenericListResponse(GenericListResponse $response,
                                            Collection $dtoList,
                                            string $type,
@@ -29,14 +39,4 @@ interface IService
                                                      array $meta,
                                                      string $type,
                                                      int $codeStatus): GenericListSearchPageResponse;
-
-    public function setGenericObjectResponse(GenericObjectResponse $response,
-                                             BaseEntity|array|null $dto,
-                                             string $type,
-                                             int $codeStatus): GenericObjectResponse;
-
-    public function setMessageResponse(BasicResponse $response,
-                                       string $type,
-                                       int $codeStatus,
-                                       string|array $message = null);
 }

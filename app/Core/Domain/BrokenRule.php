@@ -14,22 +14,22 @@ trait BrokenRule
         $this->brokenRules = new Collection();
     }
 
-    protected function validate(): void {}
-
-    protected function addBrokenRule(BusinessRule $businessRule): void
+    public function validate()
     {
-        $this->brokenRules->add($businessRule);
+        return Validator::make((array)$this, $this->rules(), $this->messages());
     }
 
-    public function getBrokenRules(array $rules = null)
+    public function rules()
     {
-        if ($rules) {
-            return Validator::make((array)$this, $rules);
-        }
+        return [
 
-        $this->brokenRules = new Collection();
-        $this->validate();
+        ];
+    }
 
-        return $this->brokenRules;
+    public function messages()
+    {
+        return [
+
+        ];
     }
 }

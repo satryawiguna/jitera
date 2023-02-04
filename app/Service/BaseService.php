@@ -13,6 +13,42 @@ use Illuminate\Support\Collection;
 
 class BaseService implements IService
 {
+    public function setMessageResponse(BasicResponse $response,
+                                       string $type,
+                                       int $codeStatus,
+                                       string|array $message = null)
+    {
+        $response->type = $type;
+        $response->codeStatus = $codeStatus;
+
+        if (is_array($message)) {
+            foreach ($message as $key => $value) {
+                foreach ($value as $item) {
+                    $method = "add" . ucfirst($type) . "MessageResponse";
+                    $response->$method($item);
+                }
+            }
+        } else {
+            $method = "add" . ucfirst($type) . "MessageResponse";
+
+            $response->$method($message);
+        }
+
+        return $response;
+    }
+
+    public function setGenericObjectResponse(GenericObjectResponse $response,
+                                             BaseEntity|array|null $dto,
+                                             string $type,
+                                             int $codeStatus): GenericObjectResponse
+    {
+        $response->dto = $dto;
+        $response->type = $type;
+        $response->codeStatus = $codeStatus;
+
+        return $response;
+    }
+
     public function setGenericListResponse(GenericListResponse $response,
                                            Collection $dtoList,
                                            string $type,
@@ -51,42 +87,6 @@ class BaseService implements IService
         $response->meta = $meta;
         $response->type = $type;
         $response->codeStatus = $codeStatus;
-
-        return $response;
-    }
-
-    public function setGenericObjectResponse(GenericObjectResponse $response,
-                                             BaseEntity|array|null $dto,
-                                             string $type,
-                                             int $codeStatus): GenericObjectResponse
-    {
-        $response->dto = $dto;
-        $response->type = $type;
-        $response->codeStatus = $codeStatus;
-
-        return $response;
-    }
-
-    public function setMessageResponse(BasicResponse $response,
-                                       string $type,
-                                       int $codeStatus,
-                                       string|array $message = null)
-    {
-        $response->type = $type;
-        $response->codeStatus = $codeStatus;
-
-        if (is_array($message)) {
-            foreach ($message as $key => $value) {
-                foreach ($value as $item) {
-                    $method = "add" . ucfirst($type) . "MessageResponse";
-                    $response->$method($item);
-                }
-            }
-        } else {
-            $method = "add" . ucfirst($type) . "MessageResponse";
-
-            $response->$method($message);
-        }
 
         return $response;
     }

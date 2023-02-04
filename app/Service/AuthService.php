@@ -38,14 +38,7 @@ class AuthService extends BaseService implements IAuthService
         DB::beginTransaction();
 
         try {
-            $brokenRules = $request->getBrokenRules([
-                'nick_name' => 'required|string',
-                'full_name' => 'required|string',
-                'username' => 'required|string|unique:users',
-                'email' => 'required|string|unique:users|email',
-                'password' => 'required|string|min:8',
-                'password_confirm' => 'required|same:password'
-            ]);
+            $brokenRules = $request->validate();
 
             if ($brokenRules->fails()) {
                 throw new ResponseBadRequestException($brokenRules->errors()->getMessages());
@@ -101,23 +94,9 @@ class AuthService extends BaseService implements IAuthService
         $response = new GenericObjectResponse();
 
         try {
-            if (filter_var($request->identity, FILTER_VALIDATE_EMAIL)) {
-                $rules = [
-                    'identity' => 'required|email',
-                    'password' => 'required'
-                ];
+            $identity = (filter_var($request->identity, FILTER_VALIDATE_EMAIL)) ? 'email' : 'username';
 
-                $identity = 'email';
-            } else {
-                $rules = [
-                    'identity' => 'required',
-                    'password' => 'required'
-                ];
-
-                $identity = 'username';
-            }
-
-            $brokenRules = $request->getBrokenRules($rules);
+            $brokenRules = $request->validate();
 
             if ($brokenRules->fails()) {
                 throw new ResponseBadRequestException($brokenRules->errors()->getMessages());
@@ -153,8 +132,8 @@ class AuthService extends BaseService implements IAuthService
             $user = Auth::user();
 
             $login = [
-                'full_name' => $user->full_name,
-                'nick_name' => $user->nick_name,
+                'full_name' => $user->contact->full_name,
+                'nick_name' => $user->contact->nick_name,
                 'token' => $token
             ];
 
@@ -173,7 +152,7 @@ class AuthService extends BaseService implements IAuthService
             Log::error("Invalid validation", $response->getMessageResponseError());
         } catch (ResponseInvalidLoginAttemptException $ex) {
             $response = $this->setMessageResponse($response,
-                "ERROR",
+                "INFO",
                 HttpResponseType::UNAUTHORIZED->value,
                 $ex->getMessage());
 
@@ -197,20 +176,12 @@ class AuthService extends BaseService implements IAuthService
         return $response;
     }
 
-    public function logout(LogoutDataRequest $request): BasicResponse
+    public function logout(string $email): BasicResponse
     {
         $response = new BasicResponse();
 
         try {
-            $brokenRules = $request->getBrokenRules([
-                'email' => 'required|email'
-            ]);
-
-            if ($brokenRules->fails()) {
-                throw new ResponseBadRequestException($brokenRules->errors()->getMessages());
-            }
-
-            $user = $this->userRepository->revokeToken($request->email);
+            $user = $this->userRepository->revokeToken($email);
 
             if (!$user) {
                 throw new ResponseNotFoundException('User not found');
@@ -222,13 +193,6 @@ class AuthService extends BaseService implements IAuthService
                 'Logout succeed');
 
             Log::info("User $user->id: Logout succeed");
-        } catch (ResponseBadRequestException $ex) {
-            $response = $this->setMessageResponse($response,
-                'ERROR',
-                HttpResponseType::BAD_REQUEST->value,
-                $ex->getMessages());
-
-            Log::error("Invalid validation", $response->getMessageResponseError());
         } catch (ResponseNotFoundException $ex) {
             $response = $this->setMessageResponse($response,
                 'ERROR',
@@ -283,7 +247,7 @@ class AuthService extends BaseService implements IAuthService
             Log::info("User ". Auth::user()->id .": Refresh token success");
         } catch (ResponseInvalidClientException $ex) {
             $response = $this->setMessageResponse($response,
-                "ERROR",
+                "INFO",
                 HttpResponseType::UNAUTHORIZED->value,
                 $ex->getMessage());
 

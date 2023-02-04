@@ -2,45 +2,55 @@
 
 namespace App\Application\Request\Auth;
 
+
 use App\Core\Domain\BrokenRule;
+
+/**
+ * @OA\Schema(
+ *      schema="LoginDataRequest",
+ *      type="object",
+ *      required={"identity", "password"}
+ * )
+ */
 
 class LoginDataRequest
 {
     use BrokenRule;
 
-    public string $identity;
-
-    public string $password;
+    /**
+     * @OA\Property(
+     *      property="identity",
+     *      title="identity",
+     *      example="satrya@freshcms.net",
+     *      type="string"
+     * )
+     */
+    public string $identity = "";
 
     /**
-     * @return string
+     * @OA\Property(
+     *      property="password",
+     *      title="password",
+     *      example="12345",
+     *      type="string"
+     * )
      */
-    public function getIdentity(): string
-    {
-        return $this->identity;
-    }
+    public string $password = "";
 
-    /**
-     * @param string $identity
-     */
-    public function setIdentity(string $identity): void
+    public function rules()
     {
-        $this->identity = $identity;
-    }
+        if (filter_var($this->identity, FILTER_VALIDATE_EMAIL)) {
+            $rules = [
+                'identity' => ['required', 'string', 'email'],
+                'password' => ['required', 'min:8']
+            ];
+        } else {
+            $rules = [
+                'identity' => ['required', 'string'],
+                'password' => ['required', 'min:8']
+            ];
+        }
 
-    /**
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
+        return $rules;
     }
 }

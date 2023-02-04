@@ -17,6 +17,10 @@ interface IUserRepository
 
     // array $related = ["contacts","so on..."]
     // array $args = ["status" => 1, "so on..." => "..."]
+    public function all(string $order = "id", string $sort = "asc", array $args = [], array $related = []): Collection;
+
+    // array $related = ["contacts","so on..."]
+    // array $args = ["status" => 1, "so on..." => "..."]
     public function allSearch(string $keyword = "", string $order = "id", string $sort = "asc", array $args = [], array $related = []): Collection;
 
     // array $related = ["contacts","so on..."]

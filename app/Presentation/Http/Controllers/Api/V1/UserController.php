@@ -4,11 +4,14 @@ namespace App\Presentation\Http\Controllers\Api\V1;
 
 use App\Application\Request\CreateUserDataRequest;
 use App\Application\Request\UpdateUserDataRequest;
-use App\Core\Application\Request\DataRequest;
-use App\Core\Application\Request\SearchDataRequest;
-use App\Core\Application\Request\SearchPageDataRequest;
+use App\Core\Application\Request\ListDataRequest;
+use App\Core\Application\Request\ListSearchDataRequest;
+use App\Core\Application\Request\ListSearchPageDataRequest;
+use App\Infrastructure\Transformer\User\StoreUserTransformer;
 use App\Presentation\Http\Controllers\Api\ApiBaseController;
 use App\Service\Contract\IUserService;
+use AutoMapperPlus\AutoMapper;
+use AutoMapperPlus\Configuration\AutoMapperConfig;
 use Illuminate\Http\Request;
 
 class UserController extends ApiBaseController
@@ -26,20 +29,18 @@ class UserController extends ApiBaseController
      *     tags={"User"},
      *     summary="Get all users",
      *     @OA\Parameter(
-     *          parameter="orderBy",
+     *          parameter="order_by",
      *          in="query",
-     *          name="orderBy",
-     *          description="Column name that would be order",
+     *          name="order_by",
      *          @OA\Schema(
      *              type="string",
-     *              default="id"
+     *              default="created_date"
      *          )
      *     ),
      *     @OA\Parameter(
      *          parameter="sort",
      *          in="query",
      *          name="sort",
-     *          description="Direction of order by",
      *          @OA\Schema(
      *              type="string",
      *              default="ASC"
@@ -50,7 +51,18 @@ class UserController extends ApiBaseController
      *         description="OK",
      *         @OA\JsonContent(
      *             oneOf={
-     *                 @OA\Schema(ref="#/components/schemas/ListSearchJSONResponse")
+     *                  @OA\Schema(
+     *                      title="meta",
+     *                      allOf={
+     *                          @OA\Property(ref="#/components/schemas/MetaResponse")
+     *                      }
+     *                  ),
+     *                  @OA\Schema(
+     *                      title="datas",
+     *                      allOf={
+     *                          @OA\Property(ref="#/components/schemas/GetAllUserDataResponse")
+     *                      }
+     *                  )
      *             },
      *             @OA\Examples(example="Get all users", value={"type":"SUCCESS","code_status":200,"datas":{{"id":"043acf25-9a28-4cc8-99d5-9cb6b29d4836","username":"betty.predovic","email":"aron98@example.com","email_verified_at":"2023-01-21T04:56:18.000000Z","status":"active","created_by":"system","updated_by":null,"created_at":"2023-01-21T04:56:18.000000Z","updated_at":"2023-01-21T04:56:18.000000Z","deleted_at":null,"role_id":2,"follower_count":0,"followed_count":0,"contact":{"id":"6adf2e69-e42e-4486-a484-57fa2e2627d8","contactable_type":"App\\Domain\\User","contactable_id":"043acf25-9a28-4cc8-99d5-9cb6b29d4836","nick_name":"Wyatt","full_name":"Hailey Schmeler","country":"Malta","state":"Mr. Johnnie Von","city":"Greggstad","address":"172 Bradtke Springs Suite 947","post_code":"30129","mobile":"281.257.4757","created_at":"2023-01-21T04:56:18.000000Z","updated_at":"2023-01-21T04:56:18.000000Z","deleted_at":null}}}}, summary="Get all users")
      *         )
@@ -58,9 +70,15 @@ class UserController extends ApiBaseController
      * )
      */
     public function actionAll(Request $request) {
-        $dataRequest = $this->setRequestData($request, new DataRequest());
+        $config = new AutoMapperConfig();
+        $config
+            ->registerMapping(\stdClass::class, ListDataRequest::class)
+            ->reverseMap();
 
-        $users = $this->userService->getUserAll($dataRequest);
+        $mapper = new AutoMapper($config);
+        $listDataRequest = $mapper->map((object) $request->all(), ListDataRequest::class);
+
+        $users = $this->userService->getUserAll($listDataRequest);
 
         if ($users->isError()) {
             return $this->getErrorJsonResponse($users);
@@ -114,9 +132,15 @@ class UserController extends ApiBaseController
      * )
      */
     public function actionSearch(Request $request) {
-        $searchDataRequest = $this->setRequestData($request, new SearchDataRequest());
+        $config = new AutoMapperConfig();
+        $config
+            ->registerMapping(\stdClass::class, ListSearchDataRequest::class)
+            ->reverseMap();
 
-        $users = $this->userService->getUserSearch($searchDataRequest);
+        $mapper = new AutoMapper($config);
+        $listSearchDataRequest = $mapper->map((object) $request->all(), ListSearchDataRequest::class);
+
+        $users = $this->userService->getUserSearch($listSearchDataRequest);
 
         if ($users->isError()) {
             return $this->getErrorJsonResponse($users);
@@ -177,10 +201,8 @@ class UserController extends ApiBaseController
      *     )
      * )
      */
-    public function actionSearchPage(Request $request) {
-        $searchPageDataRequest = $this->setRequestData($request, new SearchPageDataRequest());
-
-        $users = $this->userService->getUserSearchPage($searchPageDataRequest);
+    public function actionSearchPage(ListSearchPageDataRequest $request) {
+        $users = $this->userService->getUserSearchPage($request);
 
         if ($users->isError()) {
             return $this->getErrorJsonResponse($users);
@@ -279,7 +301,13 @@ class UserController extends ApiBaseController
      * )
      */
     public function actionStore(Request $request) {
-        $createUserDataRequest = $this->setRequestData($request, new CreateUserDataRequest());
+        $config = new AutoMapperConfig();
+        $config
+            ->registerMapping(\stdClass::class, CreateUserDataRequest::class)
+            ->reverseMap();
+
+        $mapper = new AutoMapper($config);
+        $createUserDataRequest = $mapper->map((object) $request->all(), CreateUserDataRequest::class);
 
         $this->setRequestAuthor($createUserDataRequest);
 
@@ -289,7 +317,8 @@ class UserController extends ApiBaseController
             return $this->getErrorJsonResponse($createUserResponse);
         }
 
-        return $this->getObjectJsonResponse($createUserResponse);
+        return $this->getObjectJsonResponse(response: $createUserResponse,
+            transformer: new StoreUserTransformer());
     }
 
     /**
@@ -357,7 +386,13 @@ class UserController extends ApiBaseController
      * )
      */
     public function actionUpdate(Request $request, string $id) {
-        $updateUserDataRequest = $this->setRequestData($request, new UpdateUserDataRequest());
+        $config = new AutoMapperConfig();
+        $config
+            ->registerMapping(\stdClass::class, UpdateUserDataRequest::class)
+            ->reverseMap();
+
+        $mapper = new AutoMapper($config);
+        $updateUserDataRequest = $mapper->map((object) $request->all(), UpdateUserDataRequest::class);
         $updateUserDataRequest->id = $id;
 
         $this->setRequestAuthor($updateUserDataRequest);

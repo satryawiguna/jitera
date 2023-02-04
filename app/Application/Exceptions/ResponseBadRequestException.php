@@ -11,6 +11,7 @@ class ResponseBadRequestException extends Exception
     public function __construct(array $messages)
     {
         parent::__construct();
+
         $this->messages = $messages;
     }
 

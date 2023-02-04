@@ -12,15 +12,22 @@ use Illuminate\Support\Facades\Auth;
 /**
  * @OA\Info(
  *     version="1.0.0",
- *     title="Jitera Api Documentation",
+ *     title="Jitera Api",
  *     description="Jitera Api Documentation",
  *     @OA\Contact(
+ *          name="Satrya Wiguna",
+ *          url="https://www.satryawiguna.me",
  *          email="satrya@freshcms.net"
  *     ),
  *     @OA\License(
  *          name="Apache 2.0",
  *          url="http://www.apache.org/licenses/LICENSE-2.0.html"
  *     )
+ * )
+ *
+ * @OA\Tag(
+ *     name="Jitera Api",
+ *     description="Jitera Api Documentation",
  * )
  *
  * @OA\Server(

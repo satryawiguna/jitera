@@ -1,20 +1,18 @@
 <?php
-
 namespace App\Core\Application\Request;
 
 use App\Core\Domain\BrokenRule;
-use Illuminate\Http\Request;
 
 abstract class AuditableRequest
 {
     use BrokenRule;
 
-    public ?string $request_by;
+    public string $request_by;
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getRequestBy(): ?string
+    public function getRequestBy(): string
     {
         return $this->request_by;
     }

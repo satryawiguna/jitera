@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Passport\HasApiTokens;
 
+
 class User extends BaseAuthEntity implements IAggregateRoot, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
@@ -100,4 +101,24 @@ class User extends BaseAuthEntity implements IAggregateRoot, MustVerifyEmail
     {
         return $this->hasMany(OAuth::class, 'user_id');
     }
+
+    /**
+     * @OA\Property(
+     *      property="username",
+     *      title="username",
+     *      description="Username",
+     *      example="satryawiguna",
+     *      type="string"
+     * )
+     */
+
+    /**
+     * @OA\Property(
+     *      property="email",
+     *      title="email",
+     *      description="Email",
+     *      example="satrya@gmail.com",
+     *      type="string"
+     * )
+     */
 }

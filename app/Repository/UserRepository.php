@@ -58,7 +58,8 @@ class UserRepository extends BaseRepository implements IUserRepository
         return $user->last();
     }
 
-    public function all(string $order = "id", string $sort = "asc", array $related = []): Collection {
+    public function all(string $order = "id", string $sort = "asc",
+                        array $args = [], array $related = []): Collection {
         $model = $this->model;
 
         if (count($related) > 0) {
